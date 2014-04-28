@@ -53,7 +53,10 @@ int main()
         int tn1 = 0;
         int tn2=0;
         int tn3=0;
-
+        
+        int qe1=0,qe2=0,qe3=0; //to keep total entering each queue. for throughput calculation
+        int util1=0,util2=0,util3=0;
+        
         if(randomGenerator() <= rs1)
             Elist.insert(exp_rv(lambda),ARR,Q1);
         else
@@ -77,6 +80,7 @@ int main()
                 if(CurrentEvent->queue == 0)
                 {
                     n1++;
+                    qe1++;
                     //generate next arrival
                     if(randomGenerator() <= rs1)
                         Elist.insert(clock+exp_rv(lambda),ARR, Q1);
@@ -91,6 +95,7 @@ int main()
                 else if(CurrentEvent->queue == 1)
                 {
                     n2++;
+                    qe2++;
                     //generate next arrival
                     if(randomGenerator() <= rs1)
                         Elist.insert(clock+exp_rv(lambda),ARR, Q1);
@@ -116,12 +121,9 @@ int main()
                 break;
                 
                 
-                
-                break;
-                
-                
                 case TRANSFER11:
                     tn1++;
+                    qe1++;
                     if(tn1>0)
                     {
                         //Generate TDEP for this transfer event
@@ -147,6 +149,7 @@ int main()
                     
                 case TRANSFER13:
                     tn3++;
+                    qe3++;
                     if(tn3>0)
                     {
                         //Generate TDEP for this transfer event
@@ -169,6 +172,7 @@ int main()
                 
                 case TRANSFER23:
                     tn3++;
+                    qe3++;
                     if(tn3>0)
                     {
                         //Generate TDEP for this transfer event
@@ -179,6 +183,7 @@ int main()
                     
                 case TRANSFER32:
                     tn2++;
+                    qe2++;
                     if(tn2>0)
                     {
                         //Generate TDEP for this transfer event
@@ -219,14 +224,27 @@ int main()
             EN1 += (n1+tn1)*(clock-prev);
             EN2 += (n2+tn2)*(clock-prev);
             EN3 += (n3+tn3)*(clock-prev);
+            
+            if(n1+tn1>0)
+                util1+=(clock-prev);
+            if(n2+tn2>0)
+                util2+=(clock-prev);
+            if(n3+tn3>0)
+                util3+=(clock-prev);
         
         
             //cout<<CurrentEvent->type<<endl;
             //cout<<"N1 : "<<n1+tn1<<"    N2 : "<<n2+tn2<<"    N3 : "<<n3+tn3<<"    Ndep : "<<Ndep<<endl;
-            cout<<"EN1 : "<<EN1/clock<<"    EN2 : "<<EN2/clock<<"    EN3 : "<<EN3/clock<<"    Ndep : "<<Ndep<<endl;
+            
         delete CurrentEvent;
-        if (Ndep > 1000) done=1;        // End condition
+        if (Ndep > 500000) done=1;        // End condition
     }
+        cout<<"Lambda "<<lambda<<endl;
+        cout<<"TP1 : "<<qe1/clock<<"    TP2 : "<<qe2/clock<<"    TP3 : "<<qe3/clock<<endl;
+        cout<<"Util1 : "<<util1/clock<<"    Util2 : "<<util2/clock<<"    Util3 : "<<util3/clock<<endl;
+        cout<<"EN1 : "<<EN1/clock<<"    EN2 : "<<EN2/clock<<"    EN3 : "<<EN3/clock<<endl;
+        cout<<endl<<endl;
+        
         Elist.clear();
         
 }
