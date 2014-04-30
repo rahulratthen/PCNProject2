@@ -19,6 +19,7 @@ double randomGenerator()
 }
 
 
+
 int main()
 {
     using namespace std;
@@ -55,7 +56,7 @@ int main()
         int tn3=0;
         
         int qe1=0,qe2=0,qe3=0; //to keep total entering each queue. for throughput calculation
-        int util1=0,util2=0,util3=0;
+        double util1=0,util2=0,util3=0, rho1=0, rho2=0, rho3=0;
         
         if(randomGenerator() <= rs1)
             Elist.insert(exp_rv(lambda),ARR,Q1);
@@ -71,7 +72,16 @@ int main()
             CurrentEvent = Elist.get();
             double prev = clock;
             clock=CurrentEvent->time;
+            EN1 += (double)((n1+tn1)*(clock-prev));
+            EN2 += (double)((n2+tn2)*(clock-prev));
+            EN3 += (double)((n3+tn3)*(clock-prev));
             
+            if((n1+tn1)>0)
+            util1+=(clock-prev);
+            if((n2+tn2)>0)
+            util2+=(clock-prev);
+            if((n3+tn3)>0)
+            util3+=(clock-prev);
             
             
             switch (CurrentEvent->type)
@@ -221,16 +231,9 @@ int main()
                 
                 
                 }
-            EN1 += (n1+tn1)*(clock-prev);
-            EN2 += (n2+tn2)*(clock-prev);
-            EN3 += (n3+tn3)*(clock-prev);
             
-            if(n1+tn1>0)
-                util1+=(clock-prev);
-            if(n2+tn2>0)
-                util2+=(clock-prev);
-            if(n3+tn3>0)
-                util3+=(clock-prev);
+            
+            
         
         
             //cout<<CurrentEvent->type<<endl;
@@ -239,10 +242,15 @@ int main()
         delete CurrentEvent;
         if (Ndep > 500000) done=1;        // End condition
     }
+        rho1=(double)(qe1/clock)/mu1;
+        rho2=(double)(qe2/clock)/mu2;
+        rho3=(double)(qe3/clock)/mu3;
         cout<<"Lambda "<<lambda<<endl;
         cout<<"TP1 : "<<qe1/clock<<"    TP2 : "<<qe2/clock<<"    TP3 : "<<qe3/clock<<endl;
-        cout<<"Util1 : "<<util1/clock<<"    Util2 : "<<util2/clock<<"    Util3 : "<<util3/clock<<endl;
-        cout<<"EN1 : "<<EN1/clock<<"    EN2 : "<<EN2/clock<<"    EN3 : "<<EN3/clock<<endl;
+        cout<<"Util1 : "<<(rho1)<<"    Util2 : "<<rho2<<"    Util3 : "<<rho3<<endl;
+        //cout<<"Util1 : "<<(util1/clock)<<"    Util2 : "<<util2/clock<<"    Util3 : "<<util3/clock<<endl;
+        //cout<<"EN1 : "<<EN1/clock<<"    EN2 : "<<EN2/clock<<"    EN3 : "<<EN3/clock<<endl;
+        cout<<"EN1 : "<<(double)(((qe1/clock)/mu1)/(1-((qe1/clock)/mu1)))<<"    EN2 : "<<(double)(((qe2/clock)/mu2)/(1-((qe2/clock)/mu2)))<<"    EN3 : "<<(double)(((qe3/clock)/mu3)/(1-((qe3/clock)/mu3)))<<endl;
         cout<<endl<<endl;
         
         Elist.clear();
