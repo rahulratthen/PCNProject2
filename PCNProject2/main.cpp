@@ -226,31 +226,31 @@ int main()
                     }
                     break;
                 
-                
-                
-                
-                
                 }
             
-            
-            
-        
-        
+            EN1=(double)(((qe1/clock)/mu1)/(1-((qe1/clock)/mu1)))*clock; EN2 = (double)(((qe2/clock)/mu2)/(1-((qe2/clock)/mu2)))*clock; EN3=(double)(((qe3/clock)/mu3)/(1-((qe3/clock)/mu3)))*clock;
             //cout<<CurrentEvent->type<<endl;
             //cout<<"N1 : "<<n1+tn1<<"    N2 : "<<n2+tn2<<"    N3 : "<<n3+tn3<<"    Ndep : "<<Ndep<<endl;
             
         delete CurrentEvent;
         if (Ndep > 500000) done=1;        // End condition
     }
+        
+        
+        
+        /*Printing Output for each iteration */
+        
+        
+        
         rho1=(double)(qe1/clock)/mu1;
         rho2=(double)(qe2/clock)/mu2;
         rho3=(double)(qe3/clock)/mu3;
         cout<<"Lambda "<<lambda<<endl;
         cout<<"TP1 : "<<qe1/clock<<"    TP2 : "<<qe2/clock<<"    TP3 : "<<qe3/clock<<endl;
         cout<<"Util1 : "<<(rho1)<<"    Util2 : "<<rho2<<"    Util3 : "<<rho3<<endl;
-        //cout<<"Util1 : "<<(util1/clock)<<"    Util2 : "<<util2/clock<<"    Util3 : "<<util3/clock<<endl;
-        //cout<<"EN1 : "<<EN1/clock<<"    EN2 : "<<EN2/clock<<"    EN3 : "<<EN3/clock<<endl;
-        cout<<"EN1 : "<<(double)(((qe1/clock)/mu1)/(1-((qe1/clock)/mu1)))<<"    EN2 : "<<(double)(((qe2/clock)/mu2)/(1-((qe2/clock)/mu2)))<<"    EN3 : "<<(double)(((qe3/clock)/mu3)/(1-((qe3/clock)/mu3)))<<endl;
+        cout<<"EN1 : "<<EN1/clock<<"    EN2 : "<<EN2/clock<<"    EN3 : "<<EN3/clock<<endl;
+        cout<<"E[T1] : "<<(double)(EN1/qe1)<<"    E[T2] : "<<(double)(EN2/qe2)<<"    E[T3] : "<<(double)(EN3/qe3)<<endl;
+        
         cout<<endl<<endl;
         
         Elist.clear();
